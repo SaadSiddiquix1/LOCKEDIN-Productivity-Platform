@@ -33,10 +33,6 @@ It’s for students, coders, learners, hustlers — anyone who wants to lock in 
 
 ---
 
-## 📸 Screenshot Preview
-
-![LockedIn UI Screenshot](https://lockedin-d7c07.web.app/)
-
 *Minimal, distraction-free, and clean UI designed for focus.*
 
 ---
