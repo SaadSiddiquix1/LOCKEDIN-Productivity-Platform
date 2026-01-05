@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>LOCKEDIN - Academic Productivity Hub</title>
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%233b82f6'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-weight='bold'>L</text></svg>" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="logo-container">
+      <div class="logo">L</div>
+      <span class="logo-text">LOCKEDIN</span>
+    </div>
+
+    <div style="display: flex; gap: 20px; align-items: center;">
+      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+        🌙
+      </button>
+
+      <!-- AUTH UI -->
+      <div id="authContainer" class="auth-container">
+        <button id="signInBtn" class="auth-btn">
+          Sign in
+        </button>
+        <div id="userInfo" class="user-info" style="display: none;">
+          <img id="userAvatar" class="user-avatar-small" src="" alt="" />
+          <button id="signOutBtn" class="sign-out-btn">Sign Out</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="app">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <h3>Features</h3>
+
+      <button class="nav-btn active" onclick="showSection('dashboard', this)">
+        Dashboard
+      </button>
+
+      <button class="nav-btn" onclick="showSection('home', this)">
+        Home
+      </button>
+
+      <button class="nav-btn" onclick="showSection('analyzer', this)">
+        GPA Analyzer
+      </button>
+
+      <button class="nav-btn" onclick="showSection('planner', this)">
+        Planner
+      </button>
+
+      <button class="nav-btn" onclick="showSection('study', this)">
+        Study Mode
+      </button>
+
+      <button class="nav-btn" onclick="showSection('labmanual', this)">
+        Lab Manual
+      </button>
+
+      <button class="nav-btn" onclick="showSection('attendance', this)">
+        Attendance Analyzer
+      </button>
+
+      <button class="nav-btn" onclick="showSection('notes', this)">
+        Notes
+      </button>
+
+      <button class="nav-btn" onclick="showSection('exams', this)">
+        Exam Countdown
+      </button>
+
+      <div style="margin-top: auto;"></div>
+
+
+      <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer" class="nav-btn"
+        style="text-decoration: none; color: inherit;">
+        🤖 Gemini Assistant
+      </a>
+
+      <h3 style="margin-top: 24px;">Useful Links</h3>
+      <a href="https://monkeytype.com" target="_blank" rel="noopener noreferrer" class="link-item">
+        <span class="link-icon">⌨️</span>
+        <span>Monkeytype</span>
+      </a>
+      <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="link-item">
+        <span class="link-icon">▶️</span>
+        <span>YouTube</span>
+      </a>
+      <a href="https://chatgpt.com" target="_blank" rel="noopener noreferrer" class="link-item">
+        <span class="link-icon">🤖</span>
+        <span>ChatGPT</span>
+      </a>
+      <a href="https://typingclub.com" target="_blank" rel="noopener noreferrer" class="link-item">
+        <span class="link-icon">⌨️</span>
+        <span>TypingClub</span>
+      </a>
+      <a href="https://leetcode.com" target="_blank" rel="noopener noreferrer" class="link-item">
+        <span class="link-icon">💡</span>
+        <span>LeetCode</span>
+      </a>
+      <a href="https://codeforces.com" target="_blank" rel="noopener noreferrer" class="link-item">
+        <span class="link-icon">⚡</span>
+        <span>Codeforces</span>
+      </a>
+      <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="link-item">
+        <span class="link-icon">💻</span>
+        <span>GitHub</span>
+      </a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="link-item">
+        <span class="link-icon">💼</span>
+        <span>LinkedIn</span>
+      </a>
+    </aside>
+
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="section active">
+        <h1 class="analyzer-title">Dashboard</h1>
+
+        <!-- Profile Header -->
+        <div class="profile-header">
+          <div class="profile-pic-container">
+            <img id="profilePic"
+              src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>"
+              alt="Profile" />
+            <input type="file" id="profileUpload" accept="image/*" style="display: none;" />
+            <div class="profile-overlay">📷</div>
+          </div>
+
+          <div class="profile-info">
+            <h2 id="userName" contenteditable="true" spellcheck="false">Saad Siddiqui</h2>
+            <p id="userBranch" contenteditable="true" spellcheck="false">CSBS</p>
+
+            <div class="xp-container">
+              <div class="level-badge" id="levelBadge">Level 1 Novice</div>
+              <div class="xp-bar-wrapper">
+                <div class="xp-bar" id="xpBar"></div>
+              </div>
+              <span class="xp-text" id="xpText">0 / 100 XP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+          <!-- Quote Card -->
+          <div class="dashboard-card quote-card">
+            <h3>Daily Motivation</h3>
+            <p id="quoteText" contenteditable="true" spellcheck="false">I am &gt; I was ✏️</p>
+          </div>
+
+          <!-- Stats 1 -->
+          <div class="dashboard-card chart-card">
+            <h3>Weekly Focus</h3>
+            <div class="chart-container">
+              <canvas id="weeklyChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Stats 2 -->
+          <div class="dashboard-card chart-card">
+            <h3>Completion Rate</h3>
+            <div class="chart-container">
+              <canvas id="completionChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Daily Quests -->
+          <div class="dashboard-card quests-card">
+            <div class="card-header">
+              <h3>🎯 Daily Quests</h3>
+              <span class="refresh-timer" id="questTimer">Refreshes in 12h</span>
+            </div>
+            <div class="quest-list" id="questList">
+              <!-- JS Populated -->
+              <div class="quest-item">
+                <div class="quest-checkbox"></div>
+                <div class="quest-info">
+                  <span class="quest-text">Study for 50 mins</span>
+                  <span class="quest-reward">+50 XP</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Badges -->
+          <div class="dashboard-card badges-card">
+            <h3>🏆 Achievements</h3>
+            <div class="badges-grid" id="badgesGrid">
+              <!-- JS Populated -->
+              <div class="badge-item locked">
+                <div class="badge-icon">🦉</div>
+                <span class="badge-name">Night Owl</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upcoming Deadlines -->
+          <div class="dashboard-card deadlines-card">
+            <h3>⏳ Upcoming Deadlines</h3>
+            <div class="upcoming-list" id="upcomingList">
+              <!-- JS Populated -->
+              <div class="deadline-item empty-state">
+                <span>No upcoming deadlines!</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Heatmap -->
+          <div class="dashboard-card heatmap-card">
+            <div class="heatmap-header">
+              <h3>Yearly Activity</h3>
+              <div class="heatmap-stats">
+                <span>Total Active Days: <strong id="totalActiveDays">0</strong></span>
+                <span>Max Streak: <strong id="maxStreak">0</strong></span>
+              </div>
+            </div>
+
+            <div class="heatmap-container">
+              <div class="heatmap-months" id="heatmapMonths"></div>
+              <div class="heatmap-grid" id="heatmapGrid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOME -->
+      <section id="home" class="section">
+        <h1 class="home-title">Welcome to LOCKEDIN</h1>
+        <p class="home-subtitle">Your Academic Productivity Hub</p>
+
+        <div class="home-grid">
+          <div class="home-card" data-section="analyzer">
+            <div class="home-card-icon">📊</div>
+            <h3>GPA Analyzer</h3>
+            <p>Calculate your eligibility and track your academic performance</p>
+          </div>
+
+          <div class="home-card" data-section="planner">
+            <div class="home-card-icon">📅</div>
+            <h3>Study Planner</h3>
+            <p>Organize your study schedule and manage your tasks</p>
+          </div>
+
+          <div class="home-card" data-section="study">
+            <div class="home-card-icon">⏱️</div>
+            <h3>Study Mode</h3>
+            <p>Focus with Pomodoro timer and track your study time</p>
+          </div>
+
+          <div class="home-card" data-section="labmanual">
+            <div class="home-card-icon">📝</div>
+            <h3>Lab Manual</h3>
+            <p>Track your lab assignments and submission status</p>
+          </div>
+
+          <div class="home-card" data-section="attendance">
+            <div class="home-card-icon">📊</div>
+            <h3>Attendance Analyzer</h3>
+            <p>Track attendance and monitor your risk status</p>
+          </div>
+
+          <div class="home-card" data-section="notes">
+            <div class="home-card-icon">📝</div>
+            <h3>Notes</h3>
+            <p>Quick scratchpad for your thoughts</p>
+          </div>
+
+          <div class="home-card" data-section="exams">
+            <div class="home-card-icon">⏳</div>
+            <h3>Exam Countdown</h3>
+            <p>Track days remaining for your exams</p>
+          </div>
+
+          <div class="home-card" data-section="gemini">
+            <div class="home-card-icon">🤖</div>
+            <h3>Gemini Assistant</h3>
+            <p>Chat with AI for study help and academic questions</p>
+          </div>
+        </div>
+
+        <!-- Usage Guide Section -->
+        <div class="usage-guide">
+          <h2 class="usage-guide-title">How to Use LOCKEDIN</h2>
+          <p class="usage-guide-subtitle">Get the most out of your academic productivity hub</p>
+
+          <div class="guide-grid">
+            <div class="guide-item">
+              <div class="guide-icon">📊</div>
+              <h3>GPA Analyzer</h3>
+              <p>Enter your marks for Lab Manual (out of 25), Internal Assessment (out of 40), and End Semester (out of
+                60). Click "Calculate Eligibility" to see your total score, percentage, and grade status. The progress
+                bar visually represents your performance with color-coded zones.</p>
+            </div>
+
+            <div class="guide-item">
+              <div class="guide-icon">📅</div>
+              <h3>Study Planner</h3>
+              <p>Add study tasks with descriptions and due dates. Check off completed tasks to track your progress. All
+                tasks are automatically saved to your browser's local storage, so they persist between sessions.</p>
+            </div>
+
+            <div class="guide-item">
+              <div class="guide-icon">⏱️</div>
+              <h3>Study Mode</h3>
+              <p>Use the Pomodoro timer to maintain focus. Choose from preset durations (25, 45, or 60 minutes) or use
+                the default 25-minute sessions. The flip clock displays the current time. Track your daily session count
+                to monitor your study consistency.</p>
+            </div>
+
+            <div class="guide-item">
+              <div class="guide-icon">📝</div>
+              <h3>Lab Manual Tracker</h3>
+              <p>Add subjects with custom names and track assignment submission status. Set due dates for each subject
+                and mark them as "Pending" or "Submitted". Edit or delete entries as needed to keep your lab work
+                organized.</p>
+            </div>
+
+            <div class="guide-item">
+              <div class="guide-icon">📊</div>
+              <h3>Attendance Analyzer</h3>
+              <p>Add subjects and log weekly attendance by entering classes conducted and classes attended. The system
+                automatically calculates your attendance percentage and classifies your risk status: Safe (≥80%), At
+                Risk (75-79%), or Danger (<75%). Get recovery recommendations to maintain minimum attendance.</p>
+            </div>
+
+            <div class="guide-item">
+              <div class="guide-icon">🤖</div>
+              <h3>Gemini Assistant</h3>
+              <p>Chat with your AI academic coach for personalized guidance. The assistant analyzes your academic data
+                (grades, attendance, tasks) and provides direct, actionable feedback. Ask questions about your
+                performance, study strategies, or get specific recommendations for improvement.</p>
+            </div>
+          </div>
+
+          <div class="guide-tip">
+            <div class="tip-icon">💡</div>
+            <div class="tip-content">
+              <h4>Pro Tip</h4>
+              <p>All your data is stored locally in your browser. No login required! Your information stays private and
+                secure on your device. Use the sidebar navigation to quickly switch between features.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANALYZER -->
+      <section id="analyzer" class="section">
+
+        <h1 class="analyzer-title">GPA Analyzer</h1>
+        <p class="analyzer-sub">
+          As per BVP rules — minimum 80% of total 125 marks required for O-Grade in BVCOEP.
+        </p>
+
+        <div class="analyzer-inputs">
+          <div class="input-card">
+            <label>Lab Manual (out of 25)</label>
+            <input type="number" id="lab" />
+          </div>
+
+          <div class="input-card">
+            <label>Internal Assessment (out of 40)</label>
+            <input type="number" id="ia" />
+          </div>
+
+          <div class="input-card">
+            <label>End Semester (out of 60)</label>
+            <input type="number" id="end" />
+          </div>
+        </div>
+
+        <button class="solve-btn" onclick="calculateEligibility()">
+          Calculate Eligibility
+        </button>
+
+        <div class="results">
+          <div class="result-card">
+            <h3>Total Score</h3>
+            <p id="total">--</p>
+          </div>
+
+          <div class="result-card">
+            <h3>Status</h3>
+            <p id="status">--</p>
+          </div>
+
+          <div class="result-card">
+            <h3>Percentage</h3>
+            <p id="percentage">--</p>
+          </div>
+        </div>
+
+        <div class="progress-container">
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar" id="progressBar">
+              <div class="progress-fill" id="progressFill"></div>
+              <div class="progress-glow"></div>
+            </div>
+            <div class="progress-label">
+              <span id="progressText">0%</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- PLANNER -->
+      <section id="planner" class="section">
+
+        <h1 class="planner-title">Study Planner</h1>
+        <p class="planner-subtitle">Minimal. Calm. Consistent.</p>
+
+        <div class="planner-box">
+
+          <div class="planner-controls">
+            <button class="view-btn active" id="listViewBtn">List View</button>
+            <button class="view-btn" id="calendarViewBtn">Calendar View</button>
+          </div>
+
+          <div class="planner-views">
+            <!-- List View -->
+            <div id="listView">
+              <div class="planner-inputs">
+                <input type="text" id="taskInput" placeholder="What will you study?" />
+                <input type="date" id="dateInput" />
+                <button id="addTaskBtn">Add</button>
+              </div>
+
+              <ul id="taskList" class="task-list"></ul>
+            </div>
+
+            <!-- Calendar View -->
+            <div id="calendarView">
+              <div class="calendar-header"
+                style="text-align: center; margin-bottom: 16px; font-weight: 700; font-size: 1.2rem;"
+                id="calendarTitle">
+                January 2026
+              </div>
+              <div class="calendar-grid" id="calendarGrid">
+                <!-- Days will be generated here -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- STUDY MODE -->
+      <section id="study" class="section">
+        <h1 class="study-title">Study Mode</h1>
+        <p class="study-subtitle">Focus. Productivity. Success.</p>
+
+        <div class="study-container">
+          <!-- Flip Clock -->
+          <div class="clock-container">
+            <div class="flip-clock">
+              <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front" id="hours-tens">0</div>
+                  <div class="flip-card-back" id="hours-tens-back">0</div>
+                </div>
+              </div>
+              <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front" id="hours-ones">0</div>
+                  <div class="flip-card-back" id="hours-ones-back">0</div>
+                </div>
+              </div>
+              <span class="clock-separator">:</span>
+              <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front" id="minutes-tens">0</div>
+                  <div class="flip-card-back" id="minutes-tens-back">0</div>
+                </div>
+              </div>
+              <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front" id="minutes-ones">0</div>
+                  <div class="flip-card-back" id="minutes-ones-back">0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pomodoro Timer -->
+          <div class="pomodoro-container">
+            <div class="pomodoro-display">
+              <div class="pomodoro-time" id="pomodoroTime">25:00</div>
+              <div class="pomodoro-status" id="pomodoroStatus">Ready to Focus</div>
+            </div>
+
+            <div class="pomodoro-controls">
+              <button class="pomodoro-btn" id="pomodoroStart">Start</button>
+              <button class="pomodoro-btn" id="pomodoroPause">Pause</button>
+              <button class="pomodoro-btn" id="pomodoroReset">Reset</button>
+            </div>
+
+            <div class="pomodoro-presets">
+              <button class="preset-btn" data-minutes="25">25 min</button>
+              <button class="preset-btn" data-minutes="45">45 min</button>
+              <button class="preset-btn" data-minutes="60">60 min</button>
+            </div>
+
+            <div class="pomodoro-sessions">
+              <div class="session-count">
+                <span>Sessions Today: </span>
+                <span id="sessionCount">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LAB MANUAL -->
+      <section id="labmanual" class="section">
+        <h1 class="labmanual-title">Lab Manual Tracker</h1>
+        <p class="labmanual-subtitle">Track your lab assignments and submissions</p>
+
+        <div class="labmanual-box">
+          <div class="labmanual-form">
+            <input type="text" id="subjectName" placeholder="Subject Name" />
+            <input type="date" id="dueDate" />
+            <select id="submissionStatus">
+              <option value="pending">Pending</option>
+              <option value="submitted">Submitted</option>
+            </select>
+            <button id="addSubjectBtn">Add Subject</button>
+          </div>
+
+          <div class="labmanual-list" id="labmanualList"></div>
+        </div>
+      </section>
+
+      <!-- ATTENDANCE ANALYZER -->
+      <section id="attendance" class="section">
+        <h1 class="attendance-title">Attendance Analyzer</h1>
+        <p class="attendance-subtitle">Track your attendance and stay on top of your classes</p>
+
+        <div class="attendance-container">
+          <!-- Add Subject Form -->
+          <div class="attendance-form-card">
+            <h3>Add New Subject</h3>
+            <div class="attendance-form">
+              <input type="text" id="attendanceSubjectNameInput" placeholder="Subject Name (e.g., DSA, Physics, Math)"
+                class="attendance-input" />
+              <button id="attendanceAddSubjectBtn" class="attendance-btn-primary">Add Subject</button>
+            </div>
+          </div>
+
+          <!-- Subjects List -->
+          <div class="subjects-container" id="subjectsContainer"></div>
+        </div>
+      </section>
+
+      <!-- NOTES -->
+      <section id="notes" class="section">
+        <h1 class="analyzer-title">Notes</h1>
+        <p class="analyzer-sub">Your digital scratchpad. Auto-saved.</p>
+
+        <div class="notes-container">
+          <textarea id="notesArea" class="notes-area" placeholder="Start typing here..."></textarea>
+          <div class="notes-status" id="notesStatus">Saved</div>
+        </div>
+      </section>
+
+      <!-- EXAM COUNTDOWN -->
+      <section id="exams" class="section">
+        <h1 class="analyzer-title">Exam Countdown</h1>
+        <p class="analyzer-sub">Keep track of your upcoming exams.</p>
+
+        <div class="add-exam-form">
+          <input type="text" id="examName" placeholder="Exam Name (e.g. End Semester)" />
+          <input type="date" id="examDate" />
+          <button class="solve-btn" id="addExamBtn">Add Exam</button>
+        </div>
+
+        <div class="exam-grid" id="examGrid">
+          <!-- Exams will be added here -->
+        </div>
+      </section>
+
+      <!-- GEMINI ASSISTANT -->
+      <section id="gemini" class="section">
+        <h1 class="gemini-title">Gemini AI Assistant</h1>
+        <p class="gemini-subtitle">Your intelligent study companion</p>
+
+        <div class="gemini-chat-wrapper">
+          <div class="gemini-chat-container">
+            <div class="gemini-messages" id="geminiMessages">
+              <div class="gemini-message bot-message">
+                <div class="message-content">
+                  <div class="message-avatar">🤖</div>
+                  <div class="message-text">
+                    Hello! I'm your Gemini AI assistant. How can I help you today?
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="gemini-input-container">
+              <input type="text" id="geminiInput" placeholder="Ask me anything..." class="gemini-input" />
+              <button id="geminiSendBtn" class="gemini-send-btn">
+                <span>➤</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Firebase SDKs (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+
+  <!-- Firebase Config -->
+  <script src="firebase-config.js"></script>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
