@@ -18,6 +18,10 @@ try {
 }
 
 const auth = firebase.auth();
+// Ensure user stays signed in after browser is closed
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(() => console.log("✅ Auth persistence set to LOCAL"))
+    .catch((error) => console.error("❌ Auth persistence error:", error));
 const db = firebase.firestore();
 const analytics = firebase.analytics();
 

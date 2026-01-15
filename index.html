@@ -3,10 +3,18 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="LOCKEDIN - The ultimate academic productivity hub with 3D study spaces, GPA analysis, and focused study modes.">
   <title>LOCKEDIN - Academic Productivity Hub</title>
   <link rel="icon" type="image/svg+xml"
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%233b82f6'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-weight='bold'>L</text></svg>" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
@@ -16,6 +24,9 @@
   <!-- TOP BAR -->
   <div class="topbar">
     <div class="logo-container">
+      <button id="sidebarToggle" class="sidebar-toggle-btn" aria-label="Toggle Sidebar">
+        <span class="toggle-icon">❮</span>
+      </button>
       <div class="logo">L</div>
       <span class="logo-text">LOCKEDIN</span>
     </div>
@@ -53,20 +64,20 @@
         Home
       </button>
 
-      <button class="nav-btn" onclick="showSection('analyzer', this)">
-        GPA Analyzer
-      </button>
-
       <button class="nav-btn" onclick="showSection('planner', this)">
         Planner
+      </button>
+
+      <button class="nav-btn" onclick="showSection('labmanual', this)">
+        Lab Manual
       </button>
 
       <button class="nav-btn" onclick="showSection('study', this)">
         Study Mode
       </button>
 
-      <button class="nav-btn" onclick="showSection('labmanual', this)">
-        Lab Manual
+      <button class="nav-btn" onclick="showSection('analyzer', this)">
+        GPA Analyzer
       </button>
 
       <button class="nav-btn" onclick="showSection('attendance', this)">
@@ -79,6 +90,11 @@
 
       <button class="nav-btn" onclick="showSection('exams', this)">
         Exam Countdown
+      </button>
+
+      <button class="nav-btn"
+        onclick="showSection('studyverse', this); if(window.startStudyverse) window.startStudyverse();">
+        Studyverse 3D 🌌
       </button>
 
       <div style="margin-top: auto;"></div>
@@ -131,110 +147,148 @@
 
       <!-- DASHBOARD -->
       <section id="dashboard" class="section active">
-        <h1 class="analyzer-title">Dashboard</h1>
+        <div class="section-content">
+          <h1 class="analyzer-title">Dashboard</h1>
 
-        <!-- Profile Header -->
-        <div class="profile-header">
-          <div class="profile-pic-container">
-            <img id="profilePic"
-              src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>"
-              alt="Profile" />
-            <input type="file" id="profileUpload" accept="image/*" style="display: none;" />
-            <div class="profile-overlay">📷</div>
-          </div>
+          <!-- Profile Header -->
+          <div class="profile-header">
+            <div class="profile-pic-container">
+              <img id="profilePic"
+                src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>"
+                alt="Profile" />
+              <input type="file" id="profileUpload" accept="image/*" style="display: none;" />
+              <div class="profile-overlay">📷</div>
+            </div>
 
-          <div class="profile-info">
-            <h2 id="userName" contenteditable="true" spellcheck="false">Saad Siddiqui</h2>
-            <p id="userBranch" contenteditable="true" spellcheck="false">CSBS</p>
+            <div class="profile-info">
+              <h2 id="userName" contenteditable="true" spellcheck="false">Saad Siddiqui</h2>
+              <p id="userBranch" contenteditable="true" spellcheck="false">CSBS</p>
 
-            <div class="xp-container">
-              <div class="level-badge" id="levelBadge">Level 1 Novice</div>
-              <div class="xp-bar-wrapper">
-                <div class="xp-bar" id="xpBar"></div>
+              <div class="xp-container">
+                <div class="level-badge" id="levelBadge">Level 1 Novice</div>
+                <div class="xp-bar-wrapper">
+                  <div class="xp-bar" id="xpBar"></div>
+                </div>
+                <span class="xp-text" id="xpText">0 / 100 XP</span>
               </div>
-              <span class="xp-text" id="xpText">0 / 100 XP</span>
-            </div>
-          </div>
-        </div>
 
-        <!-- Dashboard Grid -->
-        <div class="dashboard-grid">
-          <!-- Quote Card -->
-          <div class="dashboard-card quote-card">
-            <h3>Daily Motivation</h3>
-            <p id="quoteText" contenteditable="true" spellcheck="false">I am &gt; I was ✏️</p>
-          </div>
 
-          <!-- Stats 1 -->
-          <div class="dashboard-card chart-card">
-            <h3>Weekly Focus</h3>
-            <div class="chart-container">
-              <canvas id="weeklyChart"></canvas>
             </div>
           </div>
 
-          <!-- Stats 2 -->
-          <div class="dashboard-card chart-card">
-            <h3>Completion Rate</h3>
-            <div class="chart-container">
-              <canvas id="completionChart"></canvas>
+          <!-- Dashboard Grid -->
+          <div class="dashboard-grid">
+            <!-- Quote Card -->
+            <div class="dashboard-card quote-card">
+              <h3>Daily Motivation</h3>
+              <p id="quoteText" contenteditable="true" spellcheck="false">I am &gt; I was ✏️</p>
             </div>
-          </div>
 
-          <!-- Daily Quests -->
-          <div class="dashboard-card quests-card">
-            <div class="card-header">
-              <h3>🎯 Daily Quests</h3>
-              <span class="refresh-timer" id="questTimer">Refreshes in 12h</span>
+            <!-- Stats 1 -->
+            <div class="dashboard-card chart-card">
+              <h3>Weekly Focus</h3>
+              <div class="chart-container">
+                <canvas id="weeklyChart"></canvas>
+              </div>
             </div>
-            <div class="quest-list" id="questList">
-              <!-- JS Populated -->
-              <div class="quest-item">
-                <div class="quest-checkbox"></div>
-                <div class="quest-info">
-                  <span class="quest-text">Study for 50 mins</span>
-                  <span class="quest-reward">+50 XP</span>
+
+            <!-- Stats 2 -->
+            <div class="dashboard-card chart-card">
+              <h3>Completion Rate</h3>
+              <div class="chart-container">
+                <canvas id="completionChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Daily Quests -->
+            <div class="dashboard-card quests-card">
+              <div class="card-header">
+                <h3>🎯 Daily Quests</h3>
+                <span class="refresh-timer" id="questTimer">Refreshes in 12h</span>
+              </div>
+              <div class="quest-list" id="questList">
+                <!-- JS Populated -->
+                <div class="quest-item">
+                  <div class="quest-checkbox"></div>
+                  <div class="quest-info">
+                    <span class="quest-text">Study for 50 mins</span>
+                    <span class="quest-reward">+50 XP</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Badges -->
-          <div class="dashboard-card badges-card">
-            <h3>🏆 Achievements</h3>
-            <div class="badges-grid" id="badgesGrid">
-              <!-- JS Populated -->
-              <div class="badge-item locked">
-                <div class="badge-icon">🦉</div>
-                <span class="badge-name">Night Owl</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Upcoming Deadlines -->
-          <div class="dashboard-card deadlines-card">
-            <h3>⏳ Upcoming Deadlines</h3>
-            <div class="upcoming-list" id="upcomingList">
-              <!-- JS Populated -->
-              <div class="deadline-item empty-state">
-                <span>No upcoming deadlines!</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Heatmap -->
-          <div class="dashboard-card heatmap-card">
-            <div class="heatmap-header">
-              <h3>Yearly Activity</h3>
-              <div class="heatmap-stats">
-                <span>Total Active Days: <strong id="totalActiveDays">0</strong></span>
-                <span>Max Streak: <strong id="maxStreak">0</strong></span>
+            <!-- Badges -->
+            <div class="dashboard-card badges-card">
+              <h3>🏆 Achievements</h3>
+              <div class="badges-grid" id="badgesGrid">
+                <!-- JS Populated -->
+                <div class="badge-item locked">
+                  <div class="badge-icon">🦉</div>
+                  <span class="badge-name">Night Owl</span>
+                </div>
               </div>
             </div>
 
-            <div class="heatmap-container">
-              <div class="heatmap-months" id="heatmapMonths"></div>
-              <div class="heatmap-grid" id="heatmapGrid"></div>
+            <!-- Upcoming Deadlines -->
+            <div class="dashboard-card deadlines-card">
+              <div class="card-header-flex">
+                <h3>⏳ Upcoming Deadlines</h3>
+                <button class="icon-btn-small" onclick="showSection('planner', this)" title="Go to Planner">↗</button>
+              </div>
+              <div class="upcoming-list" id="upcomingList">
+                <!-- JS Populated -->
+                <div class="deadline-item empty-state">
+                  <span>No upcoming deadlines!</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lab Progress Dashboard Card -->
+            <div class="dashboard-card lab-dashboard-card">
+              <div class="card-header-flex">
+                <h3>🧪 Lab Progress</h3>
+                <button class="icon-btn-small" onclick="showSection('labmanual', this)"
+                  title="Go to Lab Manual">↗</button>
+              </div>
+
+              <div class="lab-dash-content" style="flex-direction: column; align-items: flex-start; gap: 16px;">
+                <!-- Linear Progress (Cleaner) -->
+                <div class="lab-linear-wrapper" style="width: 100%;">
+                  <div class="lab-stats-row" style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                    <span id="dashLabStats" style="color:var(--text-secondary); font-size:0.9rem;">0/0 Done</span>
+                    <span id="dashLabPercent" style="color:var(--primary); font-weight:700;">0%</span>
+                  </div>
+                  <div class="lab-progress-track"
+                    style="background:rgba(255,255,255,0.05); height:8px; border-radius:4px; overflow:hidden;">
+                    <div id="dashLabBar"
+                      style="width:0%; height:100%; background:var(--primary); transition:width 0.5s ease;"></div>
+                  </div>
+                </div>
+
+                <!-- Pending List -->
+                <div class="lab-next-up" style="width: 100%;">
+                  <div id="dashPendingLabs" class="dash-pending-list">
+                    <!-- JS populates -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Heatmap -->
+            <div class="dashboard-card heatmap-card">
+              <div class="heatmap-header">
+                <h3>Yearly Activity</h3>
+                <div class="heatmap-stats">
+                  <span>Total Active Days: <strong id="totalActiveDays">0</strong></span>
+                  <span>Max Streak: <strong id="maxStreak">0</strong></span>
+                </div>
+              </div>
+
+              <div class="heatmap-container">
+                <div class="heatmap-months" id="heatmapMonths"></div>
+                <div class="heatmap-grid" id="heatmapGrid"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -242,119 +296,125 @@
 
       <!-- HOME -->
       <section id="home" class="section">
-        <h1 class="home-title">Welcome to LOCKEDIN</h1>
-        <p class="home-subtitle">Your Academic Productivity Hub</p>
+        <div class="section-content">
+          <h1 class="home-title">Welcome to LOCKEDIN</h1>
+          <p class="home-subtitle">Your Academic Productivity Hub</p>
 
-        <div class="home-grid">
-          <div class="home-card" data-section="analyzer">
-            <div class="home-card-icon">📊</div>
-            <h3>GPA Analyzer</h3>
-            <p>Calculate your eligibility and track your academic performance</p>
-          </div>
-
-          <div class="home-card" data-section="planner">
-            <div class="home-card-icon">📅</div>
-            <h3>Study Planner</h3>
-            <p>Organize your study schedule and manage your tasks</p>
-          </div>
-
-          <div class="home-card" data-section="study">
-            <div class="home-card-icon">⏱️</div>
-            <h3>Study Mode</h3>
-            <p>Focus with Pomodoro timer and track your study time</p>
-          </div>
-
-          <div class="home-card" data-section="labmanual">
-            <div class="home-card-icon">📝</div>
-            <h3>Lab Manual</h3>
-            <p>Track your lab assignments and submission status</p>
-          </div>
-
-          <div class="home-card" data-section="attendance">
-            <div class="home-card-icon">📊</div>
-            <h3>Attendance Analyzer</h3>
-            <p>Track attendance and monitor your risk status</p>
-          </div>
-
-          <div class="home-card" data-section="notes">
-            <div class="home-card-icon">📝</div>
-            <h3>Notes</h3>
-            <p>Quick scratchpad for your thoughts</p>
-          </div>
-
-          <div class="home-card" data-section="exams">
-            <div class="home-card-icon">⏳</div>
-            <h3>Exam Countdown</h3>
-            <p>Track days remaining for your exams</p>
-          </div>
-
-          <div class="home-card" data-section="gemini">
-            <div class="home-card-icon">🤖</div>
-            <h3>Gemini Assistant</h3>
-            <p>Chat with AI for study help and academic questions</p>
-          </div>
-        </div>
-
-        <!-- Usage Guide Section -->
-        <div class="usage-guide">
-          <h2 class="usage-guide-title">How to Use LOCKEDIN</h2>
-          <p class="usage-guide-subtitle">Get the most out of your academic productivity hub</p>
-
-          <div class="guide-grid">
-            <div class="guide-item">
-              <div class="guide-icon">📊</div>
+          <div class="home-grid">
+            <div class="home-card" data-section="analyzer">
+              <div class="home-card-icon">📊</div>
               <h3>GPA Analyzer</h3>
-              <p>Enter your marks for Lab Manual (out of 25), Internal Assessment (out of 40), and End Semester (out of
-                60). Click "Calculate Eligibility" to see your total score, percentage, and grade status. The progress
-                bar visually represents your performance with color-coded zones.</p>
+              <p>Calculate your eligibility and track your academic performance</p>
             </div>
 
-            <div class="guide-item">
-              <div class="guide-icon">📅</div>
+            <div class="home-card" data-section="planner">
+              <div class="home-card-icon">📅</div>
               <h3>Study Planner</h3>
-              <p>Add study tasks with descriptions and due dates. Check off completed tasks to track your progress. All
-                tasks are automatically saved to your browser's local storage, so they persist between sessions.</p>
+              <p>Organize your study schedule and manage your tasks</p>
             </div>
 
-            <div class="guide-item">
-              <div class="guide-icon">⏱️</div>
+            <div class="home-card" data-section="study">
+              <div class="home-card-icon">⏱️</div>
               <h3>Study Mode</h3>
-              <p>Use the Pomodoro timer to maintain focus. Choose from preset durations (25, 45, or 60 minutes) or use
-                the default 25-minute sessions. The flip clock displays the current time. Track your daily session count
-                to monitor your study consistency.</p>
+              <p>Focus with Pomodoro timer and track your study time</p>
             </div>
 
-            <div class="guide-item">
-              <div class="guide-icon">📝</div>
-              <h3>Lab Manual Tracker</h3>
-              <p>Add subjects with custom names and track assignment submission status. Set due dates for each subject
-                and mark them as "Pending" or "Submitted". Edit or delete entries as needed to keep your lab work
-                organized.</p>
+            <div class="home-card" data-section="labmanual">
+              <div class="home-card-icon">📝</div>
+              <h3>Lab Manual</h3>
+              <p>Track your lab assignments and submission status</p>
             </div>
 
-            <div class="guide-item">
-              <div class="guide-icon">📊</div>
+            <div class="home-card" data-section="attendance">
+              <div class="home-card-icon">📊</div>
               <h3>Attendance Analyzer</h3>
-              <p>Add subjects and log weekly attendance by entering classes conducted and classes attended. The system
-                automatically calculates your attendance percentage and classifies your risk status: Safe (≥80%), At
-                Risk (75-79%), or Danger (<75%). Get recovery recommendations to maintain minimum attendance.</p>
+              <p>Track attendance and monitor your risk status</p>
             </div>
 
-            <div class="guide-item">
-              <div class="guide-icon">🤖</div>
+            <div class="home-card" data-section="notes">
+              <div class="home-card-icon">📝</div>
+              <h3>Notes</h3>
+              <p>Quick scratchpad for your thoughts</p>
+            </div>
+
+            <div class="home-card" data-section="exams">
+              <div class="home-card-icon">⏳</div>
+              <h3>Exam Countdown</h3>
+              <p>Track days remaining for your exams</p>
+            </div>
+
+            <div class="home-card" data-section="gemini">
+              <div class="home-card-icon">🤖</div>
               <h3>Gemini Assistant</h3>
-              <p>Chat with your AI academic coach for personalized guidance. The assistant analyzes your academic data
-                (grades, attendance, tasks) and provides direct, actionable feedback. Ask questions about your
-                performance, study strategies, or get specific recommendations for improvement.</p>
+              <p>Chat with AI for study help and academic questions</p>
             </div>
           </div>
 
-          <div class="guide-tip">
-            <div class="tip-icon">💡</div>
-            <div class="tip-content">
-              <h4>Pro Tip</h4>
-              <p>All your data is stored locally in your browser. No login required! Your information stays private and
-                secure on your device. Use the sidebar navigation to quickly switch between features.</p>
+          <!-- Usage Guide Section -->
+          <div class="usage-guide">
+            <h2 class="usage-guide-title">How to Use LOCKEDIN</h2>
+            <p class="usage-guide-subtitle">Get the most out of your academic productivity hub</p>
+
+            <div class="guide-grid">
+              <div class="guide-item">
+                <div class="guide-icon">📊</div>
+                <h3>GPA Analyzer</h3>
+                <p>Enter your marks for Lab Manual (out of 25), Internal Assessment (out of 40), and End Semester (out
+                  of
+                  60). Click "Calculate Eligibility" to see your total score, percentage, and grade status. The progress
+                  bar visually represents your performance with color-coded zones.</p>
+              </div>
+
+              <div class="guide-item">
+                <div class="guide-icon">📅</div>
+                <h3>Study Planner</h3>
+                <p>Add study tasks with descriptions and due dates. Check off completed tasks to track your progress.
+                  All
+                  tasks are automatically saved to your browser's local storage, so they persist between sessions.</p>
+              </div>
+
+              <div class="guide-item">
+                <div class="guide-icon">⏱️</div>
+                <h3>Study Mode</h3>
+                <p>Use the Pomodoro timer to maintain focus. Choose from preset durations (25, 45, or 60 minutes) or use
+                  the default 25-minute sessions. The flip clock displays the current time. Track your daily session
+                  count
+                  to monitor your study consistency.</p>
+              </div>
+
+              <div class="guide-item">
+                <div class="guide-icon">📝</div>
+                <h3>Lab Manual Tracker</h3>
+                <p>Add subjects with custom names and track assignment submission status. Set due dates for each subject
+                  and mark them as "Pending" or "Submitted". Edit or delete entries as needed to keep your lab work
+                  organized.</p>
+              </div>
+
+              <div class="guide-item">
+                <div class="guide-icon">📊</div>
+                <h3>Attendance Analyzer</h3>
+                <p>Add subjects and log weekly attendance by entering classes conducted and classes attended. The system
+                  automatically calculates your attendance percentage and classifies your risk status: Safe (≥80%), At
+                  Risk (75-79%), or Danger (<75%). Get recovery recommendations to maintain minimum attendance.</p>
+              </div>
+
+              <div class="guide-item">
+                <div class="guide-icon">🤖</div>
+                <h3>Gemini Assistant</h3>
+                <p>Chat with your AI academic coach for personalized guidance. The assistant analyzes your academic data
+                  (grades, attendance, tasks) and provides direct, actionable feedback. Ask questions about your
+                  performance, study strategies, or get specific recommendations for improvement.</p>
+              </div>
+            </div>
+
+            <div class="guide-tip">
+              <div class="tip-icon">💡</div>
+              <div class="tip-content">
+                <h4>Pro Tip</h4>
+                <p>All your data is stored locally in your browser. No login required! Your information stays private
+                  and
+                  secure on your device. Use the sidebar navigation to quickly switch between features.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -362,263 +422,378 @@
 
       <!-- ANALYZER -->
       <section id="analyzer" class="section">
+        <div class="section-content">
 
-        <h1 class="analyzer-title">GPA Analyzer</h1>
-        <p class="analyzer-sub">
-          As per BVP rules — minimum 80% of total 125 marks required for O-Grade in BVCOEP.
-        </p>
+          <h1 class="analyzer-title">GPA Analyzer</h1>
+          <p class="analyzer-sub">
+            As per BVP rules — minimum 80% of total 125 marks required for O-Grade in BVCOEP.
+          </p>
 
-        <div class="analyzer-inputs">
-          <div class="input-card">
-            <label>Lab Manual (out of 25)</label>
-            <input type="number" id="lab" />
+          <div class="analyzer-schema-selector">
+            <button class="schema-btn active" data-total="125">Standard (125)</button>
+            <button class="schema-btn" data-total="100">Theory Only (100)</button>
+            <button class="schema-btn" data-total="150">Full Practical (150)</button>
           </div>
 
-          <div class="input-card">
-            <label>Internal Assessment (out of 40)</label>
-            <input type="number" id="ia" />
-          </div>
-
-          <div class="input-card">
-            <label>End Semester (out of 60)</label>
-            <input type="number" id="end" />
-          </div>
-        </div>
-
-        <button class="solve-btn" onclick="calculateEligibility()">
-          Calculate Eligibility
-        </button>
-
-        <div class="results">
-          <div class="result-card">
-            <h3>Total Score</h3>
-            <p id="total">--</p>
-          </div>
-
-          <div class="result-card">
-            <h3>Status</h3>
-            <p id="status">--</p>
-          </div>
-
-          <div class="result-card">
-            <h3>Percentage</h3>
-            <p id="percentage">--</p>
-          </div>
-        </div>
-
-        <div class="progress-container">
-          <div class="progress-bar-wrapper">
-            <div class="progress-bar" id="progressBar">
-              <div class="progress-fill" id="progressFill"></div>
-              <div class="progress-glow"></div>
+          <div class="analyzer-inputs">
+            <div class="input-card" id="labCard">
+              <label>Lab Manual (out of 25)</label>
+              <input type="number" id="lab" placeholder="0" />
             </div>
-            <div class="progress-label">
-              <span id="progressText">0%</span>
+
+            <div class="input-card" id="iaCard">
+              <label>Internal Assessment (out of 40)</label>
+              <input type="number" id="ia" placeholder="0" />
+            </div>
+
+            <div class="input-card" id="endCard">
+              <label>End Semester (out of 60)</label>
+              <input type="number" id="end" placeholder="0" />
+            </div>
+
+            <div class="input-card" id="practicalCard" style="display: none;">
+              <label>Practical Exam (out of 25)</label>
+              <input type="number" id="practical" placeholder="0" />
             </div>
           </div>
-        </div>
 
+          <button class="solve-btn" onclick="calculateEligibility()">
+            Calculate Eligibility
+          </button>
+
+          <div class="results">
+            <div class="result-card">
+              <h3>Total Score</h3>
+              <p id="total">--</p>
+            </div>
+
+            <div class="result-card">
+              <h3>Status</h3>
+              <p id="status">--</p>
+            </div>
+
+            <div class="result-card">
+              <h3>Percentage</h3>
+              <p id="percentage">--</p>
+            </div>
+          </div>
+
+          <div class="progress-container">
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+                <div class="progress-glow"></div>
+              </div>
+              <div class="progress-label">
+                <span id="progressText">0%</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </section>
 
       <!-- PLANNER -->
       <section id="planner" class="section">
+        <div class="section-content">
 
-        <h1 class="planner-title">Study Planner</h1>
-        <p class="planner-subtitle">Minimal. Calm. Consistent.</p>
+          <h1 class="planner-title">Study Planner</h1>
+          <p class="planner-subtitle">Minimal. Calm. Consistent.</p>
 
-        <div class="planner-box">
+          <div class="planner-box">
 
-          <div class="planner-controls">
-            <button class="view-btn active" id="listViewBtn">List View</button>
-            <button class="view-btn" id="calendarViewBtn">Calendar View</button>
-          </div>
-
-          <div class="planner-views">
-            <!-- List View -->
-            <div id="listView">
-              <div class="planner-inputs">
-                <input type="text" id="taskInput" placeholder="What will you study?" />
-                <input type="date" id="dateInput" />
-                <button id="addTaskBtn">Add</button>
+            <div class="planner-controls">
+              <div style="display: flex; gap: 12px;">
+                <button class="view-btn active" id="listViewBtn">List View</button>
+                <button class="view-btn" id="calendarViewBtn">Calendar View</button>
               </div>
-
-              <ul id="taskList" class="task-list"></ul>
+              <button class="clear-btn" id="clearCompletedBtn" title="Remove finished tasks">🧹 Clear Finished</button>
             </div>
 
-            <!-- Calendar View -->
-            <div id="calendarView">
-              <div class="calendar-header"
-                style="text-align: center; margin-bottom: 16px; font-weight: 700; font-size: 1.2rem;"
-                id="calendarTitle">
-                January 2026
+            <div class="planner-views">
+              <!-- List View -->
+              <div id="listView">
+                <div class="planner-inputs">
+                  <input type="text" id="taskInput" placeholder="What will you study?" />
+                  <input type="date" id="dateInput" />
+                  <select id="taskPriority" class="task-priority-select">
+                    <option value="normal">Standard</option>
+                    <option value="high">🔥 Priority</option>
+                  </select>
+                  <button id="addTaskBtn">Add</button>
+                </div>
+
+                <ul id="taskList" class="task-list"></ul>
               </div>
-              <div class="calendar-grid" id="calendarGrid">
-                <!-- Days will be generated here -->
+
+              <!-- Calendar View -->
+              <div id="calendarView">
+                <div class="calendar-header"
+                  style="text-align: center; margin-bottom: 16px; font-weight: 700; font-size: 1.2rem;"
+                  id="calendarTitle">
+                  January 2026
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                  <!-- Days will be generated here -->
+                </div>
               </div>
             </div>
+
           </div>
 
         </div>
-
       </section>
 
       <!-- STUDY MODE -->
       <section id="study" class="section">
-        <h1 class="study-title">Study Mode</h1>
-        <p class="study-subtitle">Focus. Productivity. Success.</p>
+        <div class="section-content">
+          <h1 class="study-title">Study Mode</h1>
+          <p class="study-subtitle">Focus. Productivity. Success.</p>
 
-        <div class="study-container">
-          <!-- Flip Clock -->
-          <div class="clock-container">
-            <div class="flip-clock">
-              <div class="flip-card">
-                <div class="flip-card-inner">
-                  <div class="flip-card-front" id="hours-tens">0</div>
-                  <div class="flip-card-back" id="hours-tens-back">0</div>
+          <div class="study-container">
+            <!-- Flip Clock -->
+            <div class="clock-container">
+              <div class="flip-clock">
+                <div class="flip-card">
+                  <div class="flip-card-inner">
+                    <div class="flip-card-front" id="hours-tens">0</div>
+                    <div class="flip-card-back" id="hours-tens-back">0</div>
+                  </div>
+                </div>
+                <div class="flip-card">
+                  <div class="flip-card-inner">
+                    <div class="flip-card-front" id="hours-ones">0</div>
+                    <div class="flip-card-back" id="hours-ones-back">0</div>
+                  </div>
+                </div>
+                <span class="clock-separator">:</span>
+                <div class="flip-card">
+                  <div class="flip-card-inner">
+                    <div class="flip-card-front" id="minutes-tens">0</div>
+                    <div class="flip-card-back" id="minutes-tens-back">0</div>
+                  </div>
+                </div>
+                <div class="flip-card">
+                  <div class="flip-card-inner">
+                    <div class="flip-card-front" id="minutes-ones">0</div>
+                    <div class="flip-card-back" id="minutes-ones-back">0</div>
+                  </div>
                 </div>
               </div>
-              <div class="flip-card">
-                <div class="flip-card-inner">
-                  <div class="flip-card-front" id="hours-ones">0</div>
-                  <div class="flip-card-back" id="hours-ones-back">0</div>
+            </div>
+
+            <!-- Pomodoro Timer -->
+            <div class="pomodoro-container">
+              <div class="pomodoro-display">
+                <div class="pomodoro-time" id="pomodoroTime">25:00</div>
+                <div class="pomodoro-status" id="pomodoroStatus">Ready to Focus</div>
+                <div class="pomodoro-progress-container">
+                  <div class="pomodoro-progress-bar" id="pomodoroProgress"></div>
                 </div>
               </div>
-              <span class="clock-separator">:</span>
-              <div class="flip-card">
-                <div class="flip-card-inner">
-                  <div class="flip-card-front" id="minutes-tens">0</div>
-                  <div class="flip-card-back" id="minutes-tens-back">0</div>
+
+              <div class="pomodoro-controls">
+                <button class="pomodoro-btn" id="pomodoroStart">Start</button>
+                <button class="pomodoro-btn" id="pomodoroPause">Pause</button>
+                <button class="pomodoro-btn" id="pomodoroReset">Reset</button>
+              </div>
+
+
+              <div class="pomodoro-presets">
+                <button class="preset-btn" data-minutes="25">25 min</button>
+                <button class="preset-btn" data-minutes="45">45 min</button>
+                <button class="preset-btn" data-minutes="60">60 min</button>
+                <button class="preset-btn meditate-btn-small" data-minutes="2">Meditate</button>
+              </div>
+
+              <div class="pomodoro-sessions">
+                <div class="session-count">
+                  <span>Sessions Today: </span>
+                  <span id="sessionCount">0</span>
                 </div>
               </div>
-              <div class="flip-card">
-                <div class="flip-card-inner">
-                  <div class="flip-card-front" id="minutes-ones">0</div>
-                  <div class="flip-card-back" id="minutes-ones-back">0</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Pomodoro Timer -->
-          <div class="pomodoro-container">
-            <div class="pomodoro-display">
-              <div class="pomodoro-time" id="pomodoroTime">25:00</div>
-              <div class="pomodoro-status" id="pomodoroStatus">Ready to Focus</div>
             </div>
 
-            <div class="pomodoro-controls">
-              <button class="pomodoro-btn" id="pomodoroStart">Start</button>
-              <button class="pomodoro-btn" id="pomodoroPause">Pause</button>
-              <button class="pomodoro-btn" id="pomodoroReset">Reset</button>
+            <!-- Spotify Integration -->
+            <div class="music-container">
+              <iframe style="border-radius:12px"
+                src="https://open.spotify.com/embed/playlist/0vvXsWCC9xrXsKd4FyS8kM?utm_source=generator" width="100%"
+                height="152" frameBorder="0" allowfullscreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+              </iframe>
             </div>
 
-            <div class="pomodoro-presets">
-              <button class="preset-btn" data-minutes="25">25 min</button>
-              <button class="preset-btn" data-minutes="45">45 min</button>
-              <button class="preset-btn" data-minutes="60">60 min</button>
-            </div>
-
-            <div class="pomodoro-sessions">
-              <div class="session-count">
-                <span>Sessions Today: </span>
-                <span id="sessionCount">0</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
       <!-- LAB MANUAL -->
       <section id="labmanual" class="section">
-        <h1 class="labmanual-title">Lab Manual Tracker</h1>
-        <p class="labmanual-subtitle">Track your lab assignments and submissions</p>
+        <div class="section-content">
+          <h1 class="labmanual-title">Lab Manual Tracker</h1>
+          <p class="labmanual-subtitle">Track your lab assignments and submissions</p>
 
-        <div class="labmanual-box">
-          <div class="labmanual-form">
-            <input type="text" id="subjectName" placeholder="Subject Name" />
-            <input type="date" id="dueDate" />
-            <select id="submissionStatus">
-              <option value="pending">Pending</option>
-              <option value="submitted">Submitted</option>
-            </select>
-            <button id="addSubjectBtn">Add Subject</button>
+          <div class="labmanual-progress-wrapper">
+            <div class="labmanual-progress-info">
+              <span id="labProgressText">0% Complete</span>
+              <span id="labStatsText">0/0 Labs Done</span>
+            </div>
+            <div class="labmanual-progress-bar-container">
+              <div class="labmanual-progress-bar" id="labProgressBar"></div>
+            </div>
           </div>
 
-          <div class="labmanual-list" id="labmanualList"></div>
+          <div class="labmanual-box">
+            <div class="labmanual-view-controls">
+              <button class="view-btn active" id="labListViewBtn">List View</button>
+              <button class="view-btn" id="labCalendarViewBtn">Calendar View</button>
+            </div>
+
+            <div class="labmanual-form">
+              <input type="text" id="subjectName" placeholder="Subject Name" />
+              <input type="date" id="dueDate" />
+              <input type="url" id="labLink" placeholder="Resource Link (Optional URL)" />
+              <select id="submissionStatus">
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="submitted">Submitted</option>
+                <option value="evaluated">Evaluated</option>
+              </select>
+              <button id="addSubjectBtn">Add Subject</button>
+            </div>
+
+            <div id="labmanualList" class="labmanual-list active-view"></div>
+
+            <div id="labmanualCalendar" class="labmanual-calendar">
+              <div class="calendar-header">
+                <button id="prevMonth">&lt;</button>
+                <h3 id="currentMonthYear">January 2026</h3>
+                <button id="nextMonth">&gt;</button>
+              </div>
+              <div class="calendar-weekdays">
+                <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+              </div>
+              <div id="labCalendarGrid" class="calendar-grid"></div>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- ATTENDANCE ANALYZER -->
       <section id="attendance" class="section">
-        <h1 class="attendance-title">Attendance Analyzer</h1>
-        <p class="attendance-subtitle">Track your attendance and stay on top of your classes</p>
+        <div class="section-content">
+          <h1 class="attendance-title">Attendance Analyzer</h1>
+          <p class="attendance-subtitle">Track your attendance and stay on top of your classes</p>
 
-        <div class="attendance-container">
-          <!-- Add Subject Form -->
-          <div class="attendance-form-card">
-            <h3>Add New Subject</h3>
-            <div class="attendance-form">
-              <input type="text" id="attendanceSubjectNameInput" placeholder="Subject Name (e.g., DSA, Physics, Math)"
-                class="attendance-input" />
-              <button id="attendanceAddSubjectBtn" class="attendance-btn-primary">Add Subject</button>
+          <div class="attendance-container">
+            <!-- Add Subject Form -->
+            <div class="attendance-form-card">
+              <h3>Add New Subject</h3>
+              <div class="attendance-form">
+                <input type="text" id="attendanceSubjectNameInput" placeholder="Subject Name (e.g., DSA, Physics, Math)"
+                  class="attendance-input" />
+                <button id="attendanceAddSubjectBtn" class="attendance-btn-primary">Add Subject</button>
+              </div>
             </div>
-          </div>
 
-          <!-- Subjects List -->
-          <div class="subjects-container" id="subjectsContainer"></div>
+            <!-- Subjects List -->
+            <div class="subjects-container" id="subjectsContainer"></div>
+          </div>
         </div>
       </section>
 
       <!-- NOTES -->
       <section id="notes" class="section">
-        <h1 class="analyzer-title">Notes</h1>
-        <p class="analyzer-sub">Your digital scratchpad. Auto-saved.</p>
+        <div class="section-content">
+          <h1 class="analyzer-title">Notes</h1>
+          <p class="analyzer-sub">Your digital scratchpad. Auto-saved.</p>
 
-        <div class="notes-container">
-          <textarea id="notesArea" class="notes-area" placeholder="Start typing here..."></textarea>
-          <div class="notes-status" id="notesStatus">Saved</div>
+          <div class="notes-container">
+            <div class="notes-toolbar">
+              <div class="notes-actions">
+                <button class="notes-tool-btn" id="copyNotesBtn" title="Copy All">
+                  <i class="notes-icon">📋</i> Copy
+                </button>
+                <button class="notes-tool-btn" id="downloadNotesBtn" title="Download .txt">
+                  <i class="notes-icon">💾</i> Save
+                </button>
+                <button class="notes-tool-btn danger" id="clearNotesBtn" title="Clear All">
+                  <i class="notes-icon">🗑️</i> Clear
+                </button>
+              </div>
+              <div class="notes-stats">
+                <span id="wordCount">0 words</span>
+                <span id="charCount">0 chars</span>
+              </div>
+            </div>
+            <textarea id="notesArea" class="notes-area" placeholder="Start typing here..."></textarea>
+            <div class="notes-status" id="notesStatus">Saved</div>
+          </div>
         </div>
       </section>
 
       <!-- EXAM COUNTDOWN -->
       <section id="exams" class="section">
-        <h1 class="analyzer-title">Exam Countdown</h1>
-        <p class="analyzer-sub">Keep track of your upcoming exams.</p>
+        <div class="section-content">
+          <h1 class="analyzer-title">Exam Countdown</h1>
+          <p class="analyzer-sub">Keep track of your upcoming exams.</p>
 
-        <div class="add-exam-form">
-          <input type="text" id="examName" placeholder="Exam Name (e.g. End Semester)" />
-          <input type="date" id="examDate" />
-          <button class="solve-btn" id="addExamBtn">Add Exam</button>
-        </div>
+          <div class="add-exam-form">
+            <input type="text" id="examName" placeholder="Exam Name (e.g. End Semester)" />
+            <input type="date" id="examDate" />
+            <button class="solve-btn" id="addExamBtn">Add Exam</button>
+          </div>
 
-        <div class="exam-grid" id="examGrid">
-          <!-- Exams will be added here -->
+          <div class="exam-grid" id="examGrid">
+            <!-- Exams will be added here -->
+          </div>
         </div>
       </section>
 
       <!-- GEMINI ASSISTANT -->
       <section id="gemini" class="section">
-        <h1 class="gemini-title">Gemini AI Assistant</h1>
-        <p class="gemini-subtitle">Your intelligent study companion</p>
+        <div class="section-content">
+          <h1 class="gemini-title">Gemini AI Assistant</h1>
+          <p class="gemini-subtitle">Your intelligent study companion</p>
 
-        <div class="gemini-chat-wrapper">
-          <div class="gemini-chat-container">
-            <div class="gemini-messages" id="geminiMessages">
-              <div class="gemini-message bot-message">
-                <div class="message-content">
-                  <div class="message-avatar">🤖</div>
-                  <div class="message-text">
-                    Hello! I'm your Gemini AI assistant. How can I help you today?
+          <div class="gemini-chat-wrapper">
+            <div class="gemini-chat-container">
+              <div class="gemini-messages" id="geminiMessages">
+                <div class="gemini-message bot-message">
+                  <div class="message-content">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-text">
+                      Hello! I'm your Gemini AI assistant. How can I help you today?
+                    </div>
                   </div>
                 </div>
               </div>
+              <div class="gemini-input-container">
+                <input type="text" id="geminiInput" placeholder="Ask me anything..." class="gemini-input" />
+                <button id="geminiSendBtn" class="gemini-send-btn">
+                  <span>➤</span>
+                </button>
+              </div>
             </div>
-            <div class="gemini-input-container">
-              <input type="text" id="geminiInput" placeholder="Ask me anything..." class="gemini-input" />
-              <button id="geminiSendBtn" class="gemini-send-btn">
-                <span>➤</span>
-              </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STUDYVERSE 3D -->
+      <section id="studyverse" class="section">
+        <div class="section-content">
+          <h1 class="study-title">Studyverse 3D</h1>
+          <p class="study-subtitle">Your productivity world. Visualized.</p>
+
+          <div id="canvas-container" class="canvas-wrapper">
+            <div id="loading-screen">
+              <div class="loader-spinner"></div>
+              <p>Constructing Reality...</p>
             </div>
+          </div>
+
+          <div class="controls-hint">
+            Left Click: Rotate | Right Click: Pan | Scroll: Zoom
           </div>
         </div>
       </section>
@@ -627,7 +802,13 @@
 
   </div>
 
-  <!-- Firebase SDKs (Compat) -->
+  <!-- Three.js Dependencies -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+
+
+  <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -636,7 +817,33 @@
   <!-- Firebase Config -->
   <script src="firebase-config.js"></script>
 
+  <!-- Floating Pomodoro Widget -->
+  <div id="floatingPomodoro" class="floating-pomodoro hidden">
+    <div class="drag-handle">
+      <span>🍅 Focus</span>
+      <button id="floatCloseBtn" title="Close">×</button>
+    </div>
+    <div class="float-content">
+      <div id="floatTimerDisplay">25:00</div>
+      <div class="float-controls">
+        <button id="floatPlayBtn">▶</button>
+        <button id="floatPiPBtn" title="Pop Out Window">❐</button>
+        <button id="floatExpandBtn" title="Expand to Study Mode">↗</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Animation Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+
   <script src="script.js"></script>
+  <!-- Animation System -->
+  <script src="animations.js"></script>
+  <!-- 3D World Logic -->
+  <script src="studyverse.js"></script>
 </body>
 
 </html>
