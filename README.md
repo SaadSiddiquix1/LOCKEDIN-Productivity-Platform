@@ -2,121 +2,125 @@
 
 **Live Demo:** https://lockedin-d7c07.web.app/
 
-LockedIn is a clean, minimal, and highly engaging web platform designed to help users stay focused and disciplined throughout their day. Built as a hackathon project, LockedIn combines simple UI with powerful utility to keep distractions at bay and productivity high.
+LockedIn is a clean, minimal, and immersive productivity web app designed to help users stay focused, disciplined, and consistent. What started as a hackathon MVP has evolved into a feature-rich **focus ecosystem** that prioritizes attention, intentional work, and habit-building.
 
 ---
 
-## 🚀 What LockedIn Does
+## 🚀 What LockedIn Is
 
-LockedIn isn’t just another timer — it’s a **productivity ecosystem** that helps you:
+LockedIn is not just a timer.
 
-✅ Set focused work sessions  
-✅ Track your progress in real-time  
-✅ Maintain mental presence and accountability  
-✅ Stay distraction-free with a minimal interface  
-✅ Build better habits, one session at a time
+It is a **structured productivity environment** built to reduce distractions, reinforce consistency, and help users enter deep focus states with minimal friction.
 
-Whether you're studying, coding, grinding at work, or just trying to get through your to-do list, LockedIn gives you the structure to keep momentum.
+With a balance of minimal UI and meaningful features, LockedIn helps users lock in — mentally and practically.
 
 ---
 
-## 🧠 Why It Matters
+## 🆕 Recent Highlights
 
-In today’s world, attention is one of the most valuable resources — and also one of the easiest to lose. LockedIn helps:
-
-✨ You think less, do more  
-✨ Turn focus into a habit  
-✨ Reduce burnout by structuring work  
-✨ Bring intention back into everyday routines
-
-It’s for students, coders, learners, hustlers — anyone who wants to lock in and build results.
+- ⏱ Introduced a **floating focus timer** for seamless productivity
+- 🌌 Added **Studyverse 3D**, an immersive focus environment
+- 📊 Implemented a **fully functional productivity heatmap**
+- 🏅 Added **achievement badges** to reward consistency
+- 🎨 Introduced **dynamic themes** for personalization
+- ⚡ Improved UI polish, stability, and performance
 
 ---
 
-*Minimal, distraction-free, and clean UI designed for focus.*
+## ✨ Core Features
 
----
+### ⏱ Floating Focus Timer
+A movable, always-accessible timer that stays visible across the app, allowing uninterrupted focus without constant context switching.
 
-## 🛠 Built With
+### 🌌 Studyverse 3D
+An immersive 3D study environment designed to mentally separate deep work from distractions and enhance engagement during focus sessions.
 
-This project was built using modern, beginner-friendly tools and platforms:
+### 📊 Productivity Heatmap
+A visual activity heatmap inspired by consistency trackers, helping users understand their focus patterns and build long-term habits.
 
-| Feature | Technology |
-|---------|------------|
-| Frontend | HTML / CSS / Vanilla JavaScript |
-| Deployment & Backend | Firebase Hosting |
-| Authentication | Firebase Auth |
-| UI Logic | Custom UI + Timer Logic |
-| Domain Restrictions | Secured via Google API restrictions |
+### 🏅 Achievement Badges
+Light gamification through badges that reward effort and consistency without breaking the minimal, distraction-free philosophy.
 
----
-
-## ✨ Key Features
+### 🎨 Theme Customization
+Multiple working themes allow users to personalize their workspace while preserving clarity and focus.
 
 ### 🔐 Firebase Authentication
-Users can sign in securely using Firebase Auth — no complex backend setup required.
-
-### 🚧 Smooth Deployment
-Instantly hosted on Firebase Hosting — live, fast, and globally delivered.
-
-### 🧰 Simple & Functional UI
-No clutter, no distractions — just pure focus.
-
-### 🔄 Cross-Session Logic
-Handles session flow and state effectively through JS logic.
+Secure user authentication using Firebase Auth, with a simple and reliable login flow.
 
 ---
 
-## 🧪 Who Should Use It
+## 🧠 Design Philosophy
 
-✅ Students preparing for exams  
-✅ Developers needing focused productivity blocks  
-✅ Creators & builders tracking session progress  
-✅ Anyone overwhelmed and looking for a clean workflow helper
+LockedIn is built around **intentional minimalism**.
+
+Every feature exists to:
+- Reduce cognitive load  
+- Encourage presence and accountability  
+- Promote consistency over intensity  
+
+There are no unnecessary notifications, cluttered dashboards, or distracting animations.  
+The product treats attention as a limited and valuable resource.
+
+---
+
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|------|------------|
+| Frontend | HTML, CSS, Vanilla JavaScript |
+| Hosting | Firebase Hosting |
+| Authentication | Firebase Auth |
+| State & UI Logic | Custom JavaScript Logic |
+| Security | Google API restrictions |
+
+---
+
+## 🧪 Who This Is For
+
+- Students preparing for exams  
+- Developers working in deep-focus blocks  
+- Creators and builders tracking consistency  
+- Anyone overwhelmed and looking for a clean, intentional workflow  
 
 ---
 
 ## 📌 Project Status
 
-This project is:
-✔ Completed  
-✔ Deployed  
-✔ Archived as a hackathon MVP
+LockedIn began as a hackathon MVP and is now a **stable, actively iterated project**.
 
-Future enhancements _may_ include:
-- Real-time analytics (session trends, user streaks)
-- Firestore storage per user
-- Dark mode / customizable UI
-- Mobile-first responsiveness
+Current state:
+- ✔ Deployed
+- ✔ Stable
+- ✔ Feature-complete core experience
+
+Planned enhancements:
+- Advanced analytics (weekly summaries, trends)
+- User-specific Firestore persistence
+- Streak-based accountability systems
+- Improved mobile responsiveness
 
 ---
 
-## 🧾 License & Acknowledgements
+## 🤝 Acknowledgements
 
-This project is free to explore, fork, and learn from.
+Special thanks to **Vashisth**, whose encouragement and early discussions — including ideas around the dashboard concept — played a key role in motivating me to participate and push through the hackathon.
 
-Thanks to:
-- Google Firebase (Hosting + Auth)
-- Modern browsers and web standards
-- You — for building consistently 🚀
+All development, implementation, debugging, and deployment were done independently.
+
+---
+
+## 🧾 License
+
+This project is open for exploration, learning, and forking.
 
 ---
 
 ## 💬 Contact
 
-Got questions? Want to collaborate or improve this project?
+Want to collaborate, suggest improvements, or just connect?
 
-Reach out to me:  
-**SaadSiddiquix1**  
-Email: mssneon@gmail.com
+**Saad Siddiqui**  
+GitHub: **SaadSiddiquix1**  
+Email: **mssneon@gmail.com**
 
-Let’s keep building 🔥
-
-
-## 🤝 Acknowledgements
-
-Special thanks to Vashisth who played a key role in motivating me to participate and push through the hackathon.  
-Early discussions and encouragement — including ideas around the dashboard concept — helped me step up and commit to building the project.
-
-All development, implementation, debugging, and deployment were done independently.
-
+Let’s keep building 🚀
